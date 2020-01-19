@@ -1,0 +1,131 @@
+
+.root{
+	/*-fx-background-image: url("https://us.123rf.com/450wm/scyther5/scyther51202/scyther5120200008/12601944-primer-plano-de-la-mesa-de-p%C3%B3quer-de-fieltro-verde-de-fondo.jpg?ver=6");*/
+	/*-fx-background-image: url("/Users/noahkiefer/Desktop/BackNew.png");*/
+	-fx-background-image: url("/../resources/BackNew.png");
+	-fx-background-repeat: stretch;
+	-fx-background-height: 100;
+	-fx-background-position: center center;
+
+}
+
+#tiles.button {
+    -fx-font-family: Arial;
+    -fx-font-size: 40px;
+    -fx-background-color: #e53543;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-text-shadow: 3px, 2px, black;
+}
+
+#tiles.button:hover{
+	-fx-background-color: #c22d39;
+	-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 15	, 0.0 , 0 , 1 );
+}
+
+#ImageTiles.button{
+    -fx-text-fill: Transparent;
+    -fx-background-color: Transparent;
+}
+
+#emptyBtn.button {
+	-fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+    -fx-text-fill: transparent;
+}
+
+.button{
+	-fx-margin-left: 50px;
+	-fx-padding: 8 15 15 15;
+    -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;
+    -fx-background-radius: 8;
+    -fx-background-color: 
+        linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),
+        #9d4024,
+        #d86e3a,
+        radial-gradient(center 50% 50%, radius 100%, #d86e3a, #c54e2c);
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );
+    -fx-font-weight: bold;
+    -fx-font-size: 1.1em;
+}
+.button:hover {
+    -fx-background-color: 
+        linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),
+        #9d4024,
+        #d86e3a,
+        radial-gradient(center 50% 50%, radius 100%, #ea7f4b, #c54e2c);
+}
+.button:pressed {
+    -fx-padding: 10 15 13 15;
+    -fx-background-insets: 2 0 0 0,2 0 3 0, 2 0 4 0, 2 0 5 0;
+}
+.button #Text {
+    -fx-fill: white;
+    -fx-effect: dropshadow( gaussian , #a30000 , 0,0,0,2 );
+}
+
+#borderPane {
+	-fx-border-width: 3px;
+/*	-fx-background-color: linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),
+        #9d4024,
+        #d86e3a,*/
+        /*radial-gradient(center 50% 50%, radius 100%, #d86e3a, #c54e2c);*/
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );
+} 
+
+.label{
+	-fx-text-fill: white;
+	-fx-text-shadow: 10px, 10px, red;
+}
+
+#timer.label {
+    -fx-text-fill: white;
+    -fx-background-color: #e53543
+}
+
+.table-view {
+
+}
+
+.table-view .column-header {
+    -fx-background-color: #2d8659;
+    -fx-font-weight: bold;
+    -fx-border-color: #206040;
+    -fx-border-size: 2px;
+}
+
+.table-column {
+    -fx-alignment: CENTER_LEFT;
+   /* -fx-border-color: #206040;
+    -fx-border-size: 0.5px;*/
+}
+
+#notName.table-column {
+    -fx-alignment: CENTER;
+}
+
+.table-view .cell {
+    -fx-border-left- color: #206040;
+    -fx-border-right-color: #206040;
+}
+
+.table-row-cell {
+    -fx-cell-size: 37;
+
+}
+
+.table-row-cell: even {
+    -fx-background-color: #2d8659;
+
+}
+
+.table-row-cell: odd {
+    -fx-background-color: #339966;
+}
+
+
+
+
+
