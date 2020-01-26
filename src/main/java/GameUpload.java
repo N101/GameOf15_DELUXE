@@ -88,6 +88,8 @@ public class GameUpload  {
         });
 
         timer.setId("timer");
+        timer.setPrefWidth(40);
+        timer.setAlignment(Pos.CENTER);
         bp.setRight(timer);
 
         bp.setCenter(gamePane());
@@ -99,8 +101,8 @@ public class GameUpload  {
         grid.setId("borderPane");
         grid.setPrefSize(600, 600);
         grid.setAlignment(Pos.CENTER);
-        grid.setHgap(2);
-        grid.setVgap(2);
+        grid.setHgap(5);
+        grid.setVgap(5);
 
         int counter = 0;
 
@@ -109,9 +111,9 @@ public class GameUpload  {
                 tiles[counter] = new Btn(j, i);
                 tiles[counter].setId("ImageTiles");
 
-                tiles[counter].setPrefSize(100, 100);
-//                tiles[counter].setMinSize(100, 100);
-//                tiles[counter].setMaxSize(100, 100);
+                // So the buttons don't take up any unnecessary space and leave large spaces between the tiles
+                tiles[counter].setMaxSize(gameImage.getWidth()/4, gameImage.getHeight()/4);
+                tiles[counter].setMinSize(gameImage.getWidth()/4, gameImage.getHeight()/4);
 
                 tiles[counter].setGraphic(new ImageView(images[i][j]));
 
@@ -141,11 +143,11 @@ public class GameUpload  {
 
     public void newGame() {
         cutImage();
+        importImages();
         setBoard();
         printGrid();
         shuffleStart();
         printGrid();
-        importImages();
         moveDir = "";
         gameOver = false;
         startTimer();
@@ -182,9 +184,15 @@ public class GameUpload  {
                 int m = ran.nextInt(i + 1);
                 int n = ran.nextInt(k + 1);
 
+                // shuffle numbers array
                 int tmp = numbers[i][k];
                 numbers[i][k] = numbers[m][n];
                 numbers[m][n] = tmp;
+
+                // shuffle the image array the same
+                Image tmporary = images[i][k];
+                images[i][k] = images[m][n];
+                images[m][n] = tmporary;
             }
         }
         if(!isSolvable()) {
@@ -266,11 +274,12 @@ public class GameUpload  {
                     System.out.println("creating piece: " + counter);
 
 //                        originalImgage.getSubimage(x, y, width, height)
-                    BufferedImage SubImgage = gameImage.getSubimage(x, y, eWidth, eHeight);
+                    BufferedImage SubImage = gameImage.getSubimage(x, y, eWidth, eHeight);
 
-                    File outputfile = new File("/Users/noahkiefer/Desktop/img/"+counter+".jpg");
-                    ImageIO.write(SubImgage, "jpg", outputfile);
+                    File outputfile = new File("/Users/noahkiefer/IdeaProjects/GameOf15_DELUXE/src/main/resources/images/ImageCuts/"+counter+".jpg");
+                    ImageIO.write(SubImage, "png", outputfile);
 
+                    // Add to x in order to move 1/4 to the right and cut the next piece
                     x += eWidth;
                     counter++;
 
@@ -278,28 +287,24 @@ public class GameUpload  {
                     e.printStackTrace();
                 }
             }
+            // reset to the left border
             x = 0;
+            // move down for the next row of images
             y += eHeight;
         }
 
     }
 
     private void importImages() {
-        List<Integer> ary = new ArrayList<>();
-        for (int a = 0; a<numbers.length; a++) {
-            for (int b = 0; b<numbers[a].length; b++) {
-                ary.add(numbers[a][b]);
-            }
-        }
-//TODO: fix this to the new image
-        int counter = 0;
+        int counter = 1;
         for (int i = 0; i<images.length; i++) {
             for (int k = 0; k<images[i].length; k++) {
                 try {
-                    if (ary.get(counter) != 16) {
-                        FileInputStream fs = new FileInputStream("/Users/noahkiefer/Desktop/img/" + ary.get(counter) + ".jpg");
+                    if (counter != 16) {
+                        FileInputStream fs = new FileInputStream("/Users/noahkiefer/IdeaProjects/GameOf15_DELUXE/src/main/resources/images/ImageCuts/"+counter+".jpg");
                         images[i][k] = new Image(fs);
                     } else {
+                        System.out.println("setting last one to null");
                         images[i][k] = null;
                     }
                     counter++;

@@ -81,6 +81,8 @@ public class Game  {
         });
 
         timer.setId("timer");
+        timer.setPrefWidth(40);
+        timer.setAlignment(Pos.CENTER);
         bp.setRight(timer);
 
         bp.setCenter(gamePane());
@@ -318,14 +320,16 @@ public class Game  {
                 enterName.setTitle("Enter your username");
                 BorderPane bPane = new BorderPane();
                 bPane.getStylesheets().add("StyleClass.css");
+                bPane.setId("name");
 
                 TextField txtName = new TextField();
-                txtName.setMinWidth(200);
+                txtName.setMaxWidth(200);
                 Button sendName = new Button("Save");
                 sendName.setOnAction(e -> {
                     enterName.hide();
                 });
                 VBox vBox = new VBox();
+                vBox.setAlignment(Pos.CENTER);
                 vBox.getChildren().addAll(new Label("Enter username to record your time"), txtName, sendName);
                 vBox.setSpacing(12);
                 vBox.setStyle("-fx-margin-top: 30;");

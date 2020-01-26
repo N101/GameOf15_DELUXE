@@ -1,4 +1,5 @@
 import javafx.event.ActionEvent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -72,7 +73,7 @@ public class Controller {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Pick your image");
-        File defaultDirectory = new File("/Users/noahkiefer/IdeaProjects/GameOfFINISH/src/sample/images");
+        File defaultDirectory = new File("/Users/noahkiefer/IdeaProjects/GameOf15_DELUXE/src/main/resources/images");
         fileChooser.setInitialDirectory(defaultDirectory);
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("JPG", "*.jpg"),
@@ -80,6 +81,18 @@ public class Controller {
         );
 
         File file = fileChooser.showOpenDialog(new Stage());
+
+        // Open the image in preview so the player can see what the final puzzle should look like
+        if (file != null) {
+            try {
+                desktop.open(file);
+            } catch (IOException ex) {
+                Logger.getLogger(
+                        Controller.class.getName()).log(
+                        Level.SEVERE, null, ex
+                );
+            }
+        }
 
         GameImage.puzzleImg = file.getName().replace(".jpg", "");
 
@@ -103,30 +116,38 @@ public class Controller {
         );
 
         File file = fileChooser.showOpenDialog(new Stage());
-        if (file != null) {
-            try {
-                desktop.open(file);
-            } catch (IOException ex) {
-                Logger.getLogger(
-                        Controller.class.getName()).log(
-                        Level.SEVERE, null, ex
-                );
-            }
-        }
-        System.out.println(file.getAbsolutePath());
-
         BufferedImage image = ImageIO.read(file);
 
-        System.out.println("image has been received. Height is: " + image.getHeight());
+        if (image.getHeight() > 500 || image.getWidth() > 500) {
+            Alert a = new Alert(Alert.AlertType.ERROR, "Image must be smaller than 500x500");
+            a.showAndWait();
+            uploadImage();
+        } else {
+            // Open the image in preview so the player can see what the final puzzle should look like
+            if (file != null) {
+                try {
+                    desktop.open(file);
+                } catch (IOException ex) {
+                    Logger.getLogger(
+                            Controller.class.getName()).log(
+                            Level.SEVERE, null, ex
+                    );
+                }
+            }
 
-        GameUpload game = new GameUpload(new Stage(), image);
-        Stage stage = (Stage) uploadImage.getScene().getWindow();
-        stage.hide();
+            System.out.println(file.getAbsolutePath());
+
+            System.out.println("image has been received. Height is: " + image.getHeight());
+
+            new GameUpload(new Stage(), image);
+            Stage stage = (Stage) uploadImage.getScene().getWindow();
+            stage.hide();
+        }
     }
 
-    public void leaderboard(ActionEvent actionEvent) {
+    public void leaderboard() {
         try {
-            GoogleLeaderboard board = new GoogleLeaderboard(new Stage());
+            new GoogleLeaderboard(new Stage());
         } catch (IOException | GeneralSecurityException e) {
             e.printStackTrace();
         }

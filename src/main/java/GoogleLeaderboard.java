@@ -48,20 +48,21 @@ public class GoogleLeaderboard {
     public GoogleLeaderboard(Stage stage) throws IOException, GeneralSecurityException {
         stage.setTitle("GoogleLeaderboard");
 
-        newPlayer("looks", 11.5);
+        newPlayer("looks", 40);
 
         stage.setScene(createBoard());
         stage.show();
     }
 
     private Scene createBoard() throws IOException, GeneralSecurityException {
+        // create a table view in a borderPane
         BorderPane bpane = new BorderPane();
         bpane.getStylesheets().add("StyleClass.css");
 
         TableView tableView = new TableView();
 
         // Table columns: x3 (Place, Name, Time Taken)
-        TableColumn<Player, Integer> place = new TableColumn<>("Place");
+        TableColumn<Player, String> place = new TableColumn<>("Place");
         place.setMinWidth(75);
         place.setCellValueFactory(new PropertyValueFactory<>("place"));
         place.setId("notName");
@@ -77,6 +78,7 @@ public class GoogleLeaderboard {
 
         tableView.getColumns().addAll(place, name, time);
 
+        // load all the entries already present
         tableView.setItems(loadBoard());
 
         bpane.setCenter(tableView);
@@ -85,6 +87,7 @@ public class GoogleLeaderboard {
     }
 
     private static Credential getCredentials() throws IOException, GeneralSecurityException {
+        // Code necessary to get google credits needed for the OAuth process
         InputStream in = GoogleLeaderboard.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
         if (in == null) {
             throw new FileNotFoundException("Resource not found: " + CREDENTIALS_FILE_PATH);
@@ -119,7 +122,7 @@ public class GoogleLeaderboard {
 
         int counter = 1;
 
-        // To read data
+        // Reads data already written in google sheets
         String range = "Sheet1!B2:C12";
         ValueRange response = sheetsService.spreadsheets().values()
                 .get(SPREADSHEET_ID, range)
@@ -139,22 +142,17 @@ public class GoogleLeaderboard {
                 String name = (String) row.get(0);
                 double time = Double.parseDouble((String) row.get(1));
 
-                playerList.add(new Player(counter, name, time));
+                playerList.add(new Player(counter + ".", name, time));
 
                 counter++;
             }
-        }
-
-        while (counter != 11) {
-            playerList.add(new Player(counter, null));
-            counter++;
         }
 
         return playerList;
     }
 
     private static void write(ValueRange appendBody) throws IOException, GeneralSecurityException {
-        // To write data:
+        // To write new data to sheets:
         sheetsService = getSheetsService();
 
         AppendValuesResponse appendResults = sheetsService.spreadsheets().values()
@@ -168,7 +166,7 @@ public class GoogleLeaderboard {
     private static void edit(ValueRange body, String range) throws IOException, GeneralSecurityException {
         sheetsService = getSheetsService();
 
-        // To edit data:
+        // To edit data already present in google sheets:
         UpdateValuesResponse result = sheetsService.spreadsheets().values()
                 .update(SPREADSHEET_ID, range, body)
                 .setValueInputOption("RAW")
@@ -199,6 +197,7 @@ public class GoogleLeaderboard {
     private static void delete(int startRow) throws IOException, GeneralSecurityException {
         sheetsService = getSheetsService();
 
+        // To delete a row or column in google sheets
         DeleteDimensionRequest deleteRequest = new DeleteDimensionRequest()
                 .setRange(
                         new DimensionRange()
@@ -218,29 +217,30 @@ public class GoogleLeaderboard {
     public static void newPlayer(String name, double time) throws IOException, GeneralSecurityException {
         sheetsService = getSheetsService();
 
-        ObservableList<Player> playerList = FXCollections.observableArrayList();
-
-        int counter = 1;
-        // To read data
-        String range = "Sheet1!B2:C12";
+        // Reads data from sheets
+        String range = "Sheet1!B2:C11";
         ValueRange response = sheetsService.spreadsheets().values()
                 .get(SPREADSHEET_ID, range)
                 .execute();
 
         List<List<Object>> values = response.getValues();
 
-        if (values == null || values.isEmpty()) { // This is the first participant
+        // Checks state of the leaderboard
+        if (values == null || values.isEmpty()) {
+            // This is the first participant
             System.out.println("First entry");
             edit(new ValueRange().setValues(
-                    Arrays.asList(Arrays.asList(name, String.valueOf(time)))
+                    Arrays.asList(Arrays.asList(name, time))
             ), "B2:C2");
 
-        } else if (values.size() == 10) {  // There already are 10 players on leaderboard
+        } else if (values.size() == 10) {
+            // There already are 10 players on the leaderboard --> check if player beat someone on the board
             System.out.println("leaderboard full");
 
             // First check if player made the leaderboards
             boolean newHighscore = false;
-            int count = 0;
+            int counter = 0;    // To keep track of what position new player has beaten (if any)
+
             for (int i = 0; i < values.size(); i++) {
                 double leaderTime = Double.parseDouble((String) values.get(i).get(1));
                 if (time < leaderTime) {
@@ -248,35 +248,67 @@ public class GoogleLeaderboard {
                     System.out.println(leaderTime);
                     newHighscore = true;
                 } else {
-                    count++;
+                    counter++;
                 }
             }
-            int newPos = count+1;
+            int newPos = counter+1; // Since array index starts at 0
 
+            // Process of adding the new player to the leaderboard
             if (newHighscore) {
                 System.out.println("new board finisher");
-                // add new time
+
+                // add new players time at the bottom of the google sheets
                 write(new ValueRange().setValues(
-                        Arrays.asList(Arrays.asList(String.valueOf(newPos), name, String.valueOf(time)))
+                        Arrays.asList(Arrays.asList(newPos, name, time))
                 ));
-                // move all below new time
+                // move all slower times below the new time
                 move(newPos, 10, 11);
-                // delete 11th time
+
+                // delete 11th time to keep the leaderboard to the top 10
                 delete(11);
 
                 System.out.println("finished subbing in new time");
             }
 
-        } else {                 // There still is some space on the leaderboard (less than 10 players have played)
+        } else {   // There still is some space on the leaderboard (less than 10 players have played)
             System.out.println("leadboard still got some space");
 
-            String stringIndex = String.valueOf(values.size()+2);
-            String editRange = "B" + stringIndex + ":C" + stringIndex;
-            System.out.println(editRange);
-            edit(new ValueRange().setValues(
-                    Arrays.asList(Arrays.asList(name, String.valueOf(time)))
-            ),
-                    editRange);
+            // Check if the current player was faster than those already on the leaderboard
+            boolean newHighscore = false;
+            int counter = 0;    // To keep track of what position new player has beaten (if any)
+
+            for (int i = 0; i < values.size(); i++) {
+                double leaderTime = Double.parseDouble((String) values.get(i).get(1));
+                if (time < leaderTime) {
+                    newHighscore = true;
+                } else {
+                    counter++;
+                }
+            }
+            int newPos = counter+1;
+
+            if (newHighscore) {
+                // move all the slower players down 1
+                move(newPos, values.size(), 12);
+
+                // add new players time in his place
+                String newPlayerRange = "A" + String.valueOf(newPos+1) + ":C" + String.valueOf(newPos+1);
+                edit(new ValueRange().setValues(
+                        Arrays.asList(Arrays.asList(newPos, name, time))
+                ), newPlayerRange);
+
+                System.out.println("finished switching in new player before top 10 full");
+            } else {
+
+                // If the new time is slower, add the new time to the bottom of the leaderboard
+                String stringIndex = String.valueOf(values.size() + 2);   // to account for frozen row
+                String editRange = "B" + stringIndex + ":C" + stringIndex;
+                System.out.println(editRange);
+                edit(new ValueRange().setValues(
+                        Arrays.asList(Arrays.asList(name, time))
+                        ),
+                        editRange);
+            }
         }
 
 

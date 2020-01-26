@@ -83,6 +83,8 @@ public class GameImage  {
         });
 
         timer.setId("timer");
+        timer.setPrefWidth(40);
+        timer.setAlignment(Pos.CENTER);
         bp.setRight(timer);
 
         bp.setCenter(gamePane());

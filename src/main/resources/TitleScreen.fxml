@@ -10,11 +10,11 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@StyleClass.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
     <center>
-        <AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@StyleClass.css" BorderPane.alignment="CENTER_LEFT">
+        <AnchorPane  prefHeight="400.0" prefWidth="600.0" stylesheets="@StyleClass.css" BorderPane.alignment="CENTER">
             <children>
-                <Label id="Title" alignment="CENTER" contentDisplay="CENTER" layoutX="200.0" layoutY="55.0" prefHeight="60.0" prefWidth="200.0" style="-fx-text-fill: red;" stylesheets="@StyleClass.css" text="Game of 15" textAlignment="CENTER">
+                <Label id="Title" alignment="CENTER" contentDisplay="CENTER" layoutX="300.0" layoutY="55.0" prefHeight="60.0" prefWidth="200.0" style="-fx-text-fill: red;" stylesheets="@StyleClass.css" text="Game of 15" textAlignment="CENTER">
                     <opaqueInsets>
-                        <Insets left="200.0" right="200.0" top="20.0" />
+                        <Insets left="300.0" right="200.0" top="20.0" />
                     </opaqueInsets>
                     <cursor>
                         <Cursor fx:constant="CROSSHAIR" />
@@ -23,15 +23,15 @@
                         <Font name="AppleMyungjo Regular" size="36.0" />
                     </font>
                 </Label>
-                <Button fx:id="newGame" layoutX="225.0" layoutY="162.0" mnemonicParsing="false" onAction="#newGame" prefHeight="50.0" prefWidth="150.0" stylesheets="@StyleClass.css" text="New Game" />
-                <Button fx:id="leaderboard" layoutX="225.0" layoutY="228.0" mnemonicParsing="false" onAction="#leaderboard" prefHeight="50.0" prefWidth="150.0" stylesheets="@StyleClass.css" text="Leaderboard" />
-                <Button fx:id="numbers" layoutX="225.0" layoutY="162.0" mnemonicParsing="false" onAction="#numbers" prefHeight="50.0" prefWidth="150.0" stylesheets="@StyleClass.css" text="Numbers" visible="false" />
-                <Button fx:id="three" layoutX="225.0" layoutY="137.0" mnemonicParsing="false" onAction="#threeGame" prefHeight="50.0" prefWidth="150.0" stylesheets="@StyleClass.css" text="3x3" visible="false" />
-                <Button fx:id="four" layoutX="225.0" layoutY="200.0" mnemonicParsing="false" onAction="#fourGame" prefHeight="50.0" prefWidth="150.0" stylesheets="@StyleClass.css" text="4x4" visible="false" />
-                <Button fx:id="five" layoutX="225.0" layoutY="259.0" mnemonicParsing="false" onAction="#fiveGame" prefHeight="50.0" prefWidth="150.0" stylesheets="@StyleClass.css" text="5x5" visible="false" />
-                <Button fx:id="images" layoutX="225.0" layoutY="227.0" mnemonicParsing="false" onAction="#images" prefHeight="50.0" prefWidth="150.0" stylesheets="@StyleClass.css" text="Images" visible="false" />
-                <Button fx:id="selectImage" layoutX="225.0" layoutY="162.0" mnemonicParsing="false" onAction="#selectImage" prefHeight="50.0" prefWidth="150.0" stylesheets="@StyleClass.css" text="Select Image" visible="false" />
-                <Button fx:id="uploadImage" layoutX="225.0" layoutY="228.0" mnemonicParsing="false" onAction="#uploadImage" prefHeight="50.0" prefWidth="150.0" stylesheets="@StyleClass.css" text="Upload Image" visible="false" />
+                <Button fx:id="newGame" layoutX="325.0" layoutY="162.0" mnemonicParsing="false" onAction="#newGame" prefHeight="50.0" prefWidth="150.0" stylesheets="@StyleClass.css" text="New Game" />
+                <Button fx:id="leaderboard" layoutX="325.0" layoutY="228.0" mnemonicParsing="false" onAction="#leaderboard" prefHeight="50.0" prefWidth="150.0" stylesheets="@StyleClass.css" text="Leaderboard" />
+                <Button fx:id="numbers" layoutX="325.0" layoutY="162.0" mnemonicParsing="false" onAction="#numbers" prefHeight="50.0" prefWidth="150.0" stylesheets="@StyleClass.css" text="Numbers" visible="false" />
+                <Button fx:id="three" layoutX="325.0" layoutY="137.0" mnemonicParsing="false" onAction="#threeGame" prefHeight="50.0" prefWidth="150.0" stylesheets="@StyleClass.css" text="3x3" visible="false" />
+                <Button fx:id="four" layoutX="325.0" layoutY="200.0" mnemonicParsing="false" onAction="#fourGame" prefHeight="50.0" prefWidth="150.0" stylesheets="@StyleClass.css" text="4x4" visible="false" />
+                <Button fx:id="five" layoutX="325.0" layoutY="259.0" mnemonicParsing="false" onAction="#fiveGame" prefHeight="50.0" prefWidth="150.0" stylesheets="@StyleClass.css" text="5x5" visible="false" />
+                <Button fx:id="images" layoutX="325.0" layoutY="227.0" mnemonicParsing="false" onAction="#images" prefHeight="50.0" prefWidth="150.0" stylesheets="@StyleClass.css" text="Images" visible="false" />
+                <Button fx:id="selectImage" layoutX="325.0" layoutY="162.0" mnemonicParsing="false" onAction="#selectImage" prefHeight="50.0" prefWidth="150.0" stylesheets="@StyleClass.css" text="Select Image" visible="false" />
+                <Button fx:id="uploadImage" layoutX="325.0" layoutY="228.0" mnemonicParsing="false" onAction="#uploadImage" prefHeight="50.0" prefWidth="150.0" stylesheets="@StyleClass.css" text="Upload Image" visible="false" />
             </children>
             <cursor>
                 <Cursor fx:constant="DEFAULT" />

@@ -1,11 +1,9 @@
 
 .root{
-	/*-fx-background-image: url("https://us.123rf.com/450wm/scyther5/scyther51202/scyther5120200008/12601944-primer-plano-de-la-mesa-de-p%C3%B3quer-de-fieltro-verde-de-fondo.jpg?ver=6");*/
-	/*-fx-background-image: url("/Users/noahkiefer/Desktop/BackNew.png");*/
 	-fx-background-image: url("/../resources/BackNew.png");
 	-fx-background-repeat: stretch;
 	-fx-background-height: 100;
-	-fx-background-position: center center;
+	-fx-background-position: center;
 
 }
 
@@ -38,6 +36,7 @@
 
 .button{
 	-fx-margin-left: 50px;
+    -fx-margin-top: 50px;
 	-fx-padding: 8 15 15 15;
     -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;
     -fx-background-radius: 8;
@@ -78,11 +77,20 @@
 .label{
 	-fx-text-fill: white;
 	-fx-text-shadow: 10px, 10px, red;
+    -fx-font-weight: bold;
 }
 
 #timer.label {
     -fx-text-fill: white;
-    -fx-background-color: #e53543
+    -fx-background-color: #e53543;
+    -fx-font-family: Andale Mono, monospace;
+    -fx-font-weight: bold;
+    -fx-font-size: 1em;
+}
+
+#name {
+    -fx-background-color: gray;
+    -fx-background-image: none;
 }
 
 .table-view {
@@ -107,7 +115,7 @@
 }
 
 .table-view .cell {
-    -fx-border-left- color: #206040;
+    -fx-border-left-color: #206040;
     -fx-border-right-color: #206040;
 }
 
