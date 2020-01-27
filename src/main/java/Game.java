@@ -4,20 +4,17 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -48,7 +45,7 @@ public class Game  {
         primaryStage.show();
     }
 
-    public Scene createTheScene() {
+    private Scene createTheScene() {
         BorderPane bp = new BorderPane();
         bp.getStylesheets().add("/../resources/StyleClass.css");  //../resources/StyleClass.css
 
@@ -111,16 +108,14 @@ public class Game  {
                 int finalJ = j;
 
                 tiles[counter].setOnAction(e -> {
-                    if (gameOver == true) {
+                    if (gameOver) {
                         new Alert(Alert.AlertType.ERROR, "Game is done already! Start a new game").showAndWait();
                     } else if (isMoveLegal(finalJ, finalI) == true) {
                         move(finalJ, finalI);
                         repaintNumbers();
                         try {
                             System.out.println(isGameDone());
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
-                        } catch (GeneralSecurityException e1) {
+                        } catch (IOException | GeneralSecurityException e1) {
                             e1.printStackTrace();
                         }
                     }
@@ -136,7 +131,7 @@ public class Game  {
         return grid;
     }
 
-    public void newGame() {
+    private void newGame() {
         setBoard();
         printGrid();
         shuffleStart();
@@ -160,10 +155,10 @@ public class Game  {
     }
 
     private void printGrid() {
-        String word = "";
+        StringBuilder word = new StringBuilder();
         for (int i = 0; i < numbers.length; i++) {
             for (int j = 0; j < numbers[i].length; j++) {
-                word += numbers[i][j] + ", ";
+                word.append(numbers[i][j]).append(", ");
             }
         }
         System.out.println(word);
@@ -203,8 +198,8 @@ public class Game  {
 
         for (int a = 0; a < ary.size(); a++) {
             for (int b = a; b < ary.size(); b++) {
-                if (ary.get(a) == -1 || ary.get(b) == -1) {
-                } else if (ary.get(a) > ary.get(b)) {
+                if (ary.get(a) == -1 || ary.get(b) == -1) { }
+                else if (ary.get(a) > ary.get(b)) {
                     Inversions++;
                 }
             }
@@ -245,7 +240,8 @@ public class Game  {
         timeline.play();
     }
 
-    public boolean isMoveLegal(int x, int y) {
+
+    private boolean isMoveLegal(int x, int y) {
         boolean check = false;
 
         // Check above
@@ -293,7 +289,7 @@ public class Game  {
         }
     }
 
-    public boolean isGameDone() throws IOException, GeneralSecurityException {
+    private boolean isGameDone() throws IOException, GeneralSecurityException {
         List<Integer> tmpary = new ArrayList<>();
         boolean tmp = true;                         //starts as true since it is looking if anything is out of place
 
@@ -325,9 +321,7 @@ public class Game  {
                 TextField txtName = new TextField();
                 txtName.setMaxWidth(200);
                 Button sendName = new Button("Save");
-                sendName.setOnAction(e -> {
-                    enterName.hide();
-                });
+                sendName.setOnAction(e -> enterName.hide());
                 VBox vBox = new VBox();
                 vBox.setAlignment(Pos.CENTER);
                 vBox.getChildren().addAll(new Label("Enter username to record your time"), txtName, sendName);
@@ -345,18 +339,6 @@ public class Game  {
             }
         }
         return gameOver;
-    }
-
-    public void setStyle(String style, Btn btn) {
-        if (style.equals("empty")) {
-            btn.setStyle(null);
-            btn.getStyleClass().clear();
-            btn.getStyleClass().add("emptyBtn");
-            btn.setStyle("emptyPos");
-        } else if (style.equals("normal")) {
-            btn.getStyleClass().clear();
-            btn.getStyleClass().add("button");
-        }
     }
 
     private void repaintNumbers() {

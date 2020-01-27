@@ -1,4 +1,15 @@
-import com.google.api.client.util.Value;
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
+import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
+import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
+import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.store.FileDataStoreFactory;
+import com.google.api.services.sheets.v4.Sheets;
+import com.google.api.services.sheets.v4.SheetsScopes;
+import com.google.api.services.sheets.v4.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
@@ -12,27 +23,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
-import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
-import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.util.store.FileDataStoreFactory;
-
-import com.google.api.services.sheets.v4.Sheets;
-import com.google.api.services.sheets.v4.SheetsScopes;
-import com.google.api.services.sheets.v4.model.*;
-import org.apache.commons.codec.binary.Hex;
 
 public class GoogleLeaderboard {
     private static Sheets sheetsService;
@@ -107,7 +101,7 @@ public class GoogleLeaderboard {
         return credential;
     }
 
-    public static Sheets getSheetsService() throws IOException, GeneralSecurityException {
+    private static Sheets getSheetsService() throws IOException, GeneralSecurityException {
         Credential credential = getCredentials();
         return new Sheets.Builder(GoogleNetHttpTransport.newTrustedTransport(),
                 JSON_FACTORY, credential)
@@ -214,7 +208,7 @@ public class GoogleLeaderboard {
     }
 
 
-    public static void newPlayer(String name, double time) throws IOException, GeneralSecurityException {
+    static void newPlayer(String name, double time) throws IOException, GeneralSecurityException {
         sheetsService = getSheetsService();
 
         // Reads data from sheets
@@ -311,125 +305,6 @@ public class GoogleLeaderboard {
             }
         }
 
-
-    }
-
-    public static void sheetCommands(String command, int index) throws IOException, GeneralSecurityException {
-        sheetsService = getSheetsService();
-
-        List<Request> requests = new ArrayList<>();
-        switch (command) {
-            case "read":
-                // To read data
-                String range = "Sheet1!B2:C12";
-                ValueRange response = sheetsService.spreadsheets().values()
-                        .get(SPREADSHEET_ID, range)
-                        .execute();
-
-                List<List<Object>> values = response.getValues();
-                int counter = 1;
-
-                if(values == null || values.isEmpty()) {
-                    System.out.println("No data found");
-                } else {
-                    System.out.println("Place, Name, Time:");
-                    for (List row: values) {
-                        System.out.printf("%s came in %s. with a time of %s\n", row.get(0), counter, row.get(1));
-                        counter ++;
-                    }
-                }
-//              double x = (double) Integer.parseInt((String) values.get(5).get(0));
-//              System.out.println(x);
-                System.out.println("");
-                double newNum = 14.5;
-                for (int i = 0; i<values.size(); i++) {
-
-                    if (newNum < Double.parseDouble((String) values.get(i).get(2))) {
-                        System.out.println("\ngonna move");
-//                      x = 6;
-//                      move();
-                        break;
-                    } else {
-                        System.out.println(i);
-                    }
-                }
-                break;
-            case "write":
-                // To write data:
-                ValueRange appendBody = new ValueRange()
-                        .setValues(Arrays.asList(
-                                Arrays.asList("Bob", "20", "Unidentified", "did this work?")
-                        ));
-
-                AppendValuesResponse appendResults = sheetsService.spreadsheets().values()
-                        .append(SPREADSHEET_ID, "Sheet1", appendBody)
-                        .setValueInputOption("USER_ENTERED")
-                        .setInsertDataOption("INSERT_ROWS")
-                        .setIncludeValuesInResponse(true)
-                        .execute();
-                break;
-            case "edit":
-                // To edit data:
-                ValueRange body = new ValueRange()
-                        .setValues(Arrays.asList(
-                                Arrays.asList("addedByUpdate", "asdf")
-                        ));
-
-                UpdateValuesResponse result = sheetsService.spreadsheets().values()
-                        .update(SPREADSHEET_ID, "B3:C3", body)
-                        .setValueInputOption("RAW")
-                        .execute();
-                break;
-            case "delete":
-                // To delete data:  (Rows or Columns ONLY)
-                DeleteDimensionRequest deleteRequest = new DeleteDimensionRequest()
-                        .setRange(
-                                new DimensionRange()
-                                    .setSheetId(0)
-                                .setDimension("CELL")
-                                .setStartIndex(2)
-                                .setEndIndex(3)
-                        );
-
-                requests.add(new Request().setDeleteDimension(deleteRequest));
-                break;
-            case "move":
-                 //To move rows:
-                MoveDimensionRequest moved = new MoveDimensionRequest()
-                        .setSource(
-                                new DimensionRange()
-                                    .setSheetId(0)
-                                .setDimension("ROWS")
-                                .setStartIndex(7)
-                                .setEndIndex(11)
-                        )
-                        .setDestinationIndex(12);
-
-                requests.add(new Request().setMoveDimension(moved));
-                break;
-
-        }
-
-        BatchUpdateSpreadsheetRequest body = new BatchUpdateSpreadsheetRequest().setRequests(requests);
-        sheetsService.spreadsheets().batchUpdate(SPREADSHEET_ID, body).execute();
-
-        // To delete specific cells range:
-//        DeleteRangeRequest deleteRequest = new DeleteRangeRequest()
-//                .setRange(
-//                        new GridRange()
-//                            .setSheetId(0)
-//                            .setStartColumnIndex(0)
-//                            .setStartRowIndex(6)
-//                            .setEndColumnIndex(3)
-//                            .setEndRowIndex(7)
-//                )
-//                .setShiftDimension("ROWS");
-//
-//        List<Request> requests = new ArrayList<>();
-//        requests.add(new Request().setDeleteRange(deleteRequest));
-//
-//        BatchUpdateSpreadsheetRequest body = new BatchUpdateSpreadsheetRequest().setRequests(requests);
-//        sheetsService.spreadsheets().batchUpdate(SPREADSHEET_ID, body).execute();
     }
 
 

@@ -10,11 +10,6 @@ public class Player {
         this.time = time;
     }
 
-    Player(String place, String name) {
-        this.place = place;
-        this.name = name;
-    }
-
     public String getPlace() {
         return place;
     }

@@ -33,7 +33,7 @@ public class GameImage  {
     private boolean gameOver = false;
     private String MoveDir = "";
     private Image[][] images;
-    public static String puzzleImg;
+    static String puzzleImg;
 
     private Label timer = new Label();
     private Duration time = Duration.ZERO;
@@ -50,7 +50,7 @@ public class GameImage  {
         primaryStage.show();
     }
 
-    public Scene createTheScene() {
+    private Scene createTheScene() {
         BorderPane bp = new BorderPane();
         bp.getStylesheets().add("/../resources/StyleClass.css");
 
@@ -115,7 +115,7 @@ public class GameImage  {
                 int finalJ = j;
 
                 tiles[counter].setOnAction(e -> {
-                    if (gameOver == true) {
+                    if (gameOver) {
                         new Alert(Alert.AlertType.ERROR, "Game is done already! Start a new game").showAndWait();
                     } else if (isMoveLegal(finalJ, finalI) == true) {
                         move(finalJ, finalI);
@@ -135,7 +135,7 @@ public class GameImage  {
         return grid;
     }
 
-    public void newGame() {
+    private void newGame() {
         setBoard();
         printGrid();
         shuffleStart();
@@ -160,10 +160,10 @@ public class GameImage  {
     }
 
     private void printGrid() {
-        String word = "";
+        StringBuilder word = new StringBuilder();
         for (int i = 0; i < numbers.length; i++) {
             for (int j = 0; j < numbers[i].length; j++) {
-                word += numbers[i][j] + ", ";
+                word.append(numbers[i][j]).append(", ");
             }
         }
         System.out.println(word);
@@ -210,12 +210,8 @@ public class GameImage  {
             }
         }
 
-        if (gridW % 2 == 0) {
-            System.out.println((Inversions % 2 == 0) == (blankPos % 2 != 0));
-            return (Inversions % 2 == 0) == (blankPos % 2 != 0);
-        } else {
-            return Inversions % 2 == 0;
-        }
+        System.out.println((Inversions % 2 == 0) == (blankPos % 2 != 0));
+        return (Inversions % 2 == 0) == (blankPos % 2 != 0);
     }
 
     private void startTimer() {
@@ -261,7 +257,7 @@ public class GameImage  {
         }
     }
 
-    public boolean isMoveLegal(int x, int y) {
+    private boolean isMoveLegal(int x, int y) {
         boolean check = false;
 
         // Check above
@@ -318,7 +314,7 @@ public class GameImage  {
         }
     }
 
-    public boolean isGameDone() {
+    private boolean isGameDone() {
         List<Integer> tmpary = new ArrayList<>();
         boolean tmp = true;                         //starts as true since it is looking if anything is out of place
 

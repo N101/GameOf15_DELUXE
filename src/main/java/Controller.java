@@ -1,17 +1,16 @@
-import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
-import java.awt.Desktop;
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.io.File;
-import java.io.IOException;
 
 public class Controller {
     public Button newGame;
@@ -35,7 +34,7 @@ public class Controller {
 
     }
 
-    public void numbers(ActionEvent actionEvent) {  // ask Robertson do we rlly need these action events??
+    public void numbers() {  // ask Robertson do we rlly need these action events??
         numbers.setVisible(false);
         images.setVisible(false);
         three.setVisible(true);
@@ -51,19 +50,19 @@ public class Controller {
     }
 
     public void threeGame() {
-        Game game = new Game(new Stage(), 3);
+        new Game(new Stage(), 3);
         Stage stage = (Stage) newGame.getScene().getWindow();
         stage.hide();
     }
 
     public void fourGame() {
-        Game game = new Game(new Stage(), 4);
+        new Game(new Stage(), 4);
         Stage windw = (Stage) newGame.getScene().getWindow();
         windw.hide();
     }
 
     public void fiveGame() {
-        Game game = new Game(new Stage(), 5);
+        new Game(new Stage(), 5);
         Stage windw = (Stage) newGame.getScene().getWindow();
         windw.hide();
     }
@@ -96,7 +95,7 @@ public class Controller {
 
         GameImage.puzzleImg = file.getName().replace(".jpg", "");
 
-        GameImage game = new GameImage(new Stage());
+        new GameImage(new Stage());
         Stage stage = (Stage) selectImage.getScene().getWindow();
         stage.hide();
     }

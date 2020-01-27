@@ -55,7 +55,7 @@ public class GameUpload  {
         primaryStage.show();
     }
 
-    public Scene createTheScene() {
+    private Scene createTheScene() {
         BorderPane bp = new BorderPane();
         bp.getStylesheets().add("/../resources/StyleClass.css");
 
@@ -121,7 +121,7 @@ public class GameUpload  {
                 int finalJ = j;
 
                 tiles[counter].setOnAction(e -> {
-                    if (gameOver == true) {
+                    if (gameOver) {
                         new Alert(Alert.AlertType.ERROR, "Game is done already! Start a new game").showAndWait();
                     } else if (isMoveLegal(finalJ, finalI) == true) {
                         move(finalJ, finalI);
@@ -141,7 +141,7 @@ public class GameUpload  {
         return grid;
     }
 
-    public void newGame() {
+    private void newGame() {
         cutImage();
         importImages();
         setBoard();
@@ -167,10 +167,10 @@ public class GameUpload  {
     }
 
     private void printGrid() {
-        String word = "";
-        for (int i = 0; i < numbers.length; i++) {
-            for (int j = 0; j < numbers[i].length; j++) {
-                word += numbers[i][j] + ", ";
+        StringBuilder word = new StringBuilder();
+        for (int[] number : numbers) {
+            for (int aNumber : number) {
+                word.append(aNumber).append(", ");
             }
         }
         System.out.println(word);
@@ -216,19 +216,15 @@ public class GameUpload  {
 
         for (int a = 0; a < ary.size(); a++) {
             for (int b = a; b < ary.size(); b++) {
-                if (ary.get(a) == 16 || ary.get(b) == 16) {
-                } else if (ary.get(a) > ary.get(b)) {
+                if (ary.get(a) == 16 || ary.get(b) == 16) { }
+                else if (ary.get(a) > ary.get(b)) {
                     Inversions++;
                 }
             }
         }
 
-        if (gridW % 2 == 0) {
-            System.out.println((Inversions % 2 == 0) == (blankPos % 2 != 0));
-            return (Inversions % 2 == 0) == (blankPos % 2 != 0);
-        } else {
-            return Inversions % 2 == 0;
-        }
+        System.out.println((Inversions % 2 == 0) == (blankPos % 2 != 0));
+        return (Inversions % 2 == 0) == (blankPos % 2 != 0);
     }
 
     private void startTimer() {
@@ -276,7 +272,7 @@ public class GameUpload  {
 //                        originalImgage.getSubimage(x, y, width, height)
                     BufferedImage SubImage = gameImage.getSubimage(x, y, eWidth, eHeight);
 
-                    File outputfile = new File("/Users/noahkiefer/IdeaProjects/GameOf15_DELUXE/src/main/resources/images/ImageCuts/"+counter+".jpg");
+                    File outputfile = new File("/Users/noahkiefer/IdeaProjects/GameOf15_DELUXE/src/main/resources/images/ImageCuts/"+counter+".png");
                     ImageIO.write(SubImage, "png", outputfile);
 
                     // Add to x in order to move 1/4 to the right and cut the next piece
@@ -301,7 +297,7 @@ public class GameUpload  {
             for (int k = 0; k<images[i].length; k++) {
                 try {
                     if (counter != 16) {
-                        FileInputStream fs = new FileInputStream("/Users/noahkiefer/IdeaProjects/GameOf15_DELUXE/src/main/resources/images/ImageCuts/"+counter+".jpg");
+                        FileInputStream fs = new FileInputStream("/Users/noahkiefer/IdeaProjects/GameOf15_DELUXE/src/main/resources/images/ImageCuts/"+counter+".png");
                         images[i][k] = new Image(fs);
                     } else {
                         System.out.println("setting last one to null");
@@ -315,7 +311,7 @@ public class GameUpload  {
         }
     }
 
-    public boolean isMoveLegal(int x, int y) {
+    private boolean isMoveLegal(int x, int y) {
         boolean check = false;
 
         // Check above
@@ -372,7 +368,7 @@ public class GameUpload  {
         }
     }
 
-    public boolean isGameDone() {
+    private boolean isGameDone() {
         List<Integer> tmpary = new ArrayList<>();
         boolean tmp = true;                         //starts as true since it is looking if anything is out of place
 
