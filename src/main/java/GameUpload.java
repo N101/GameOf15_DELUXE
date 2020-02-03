@@ -267,9 +267,6 @@ public class GameUpload  {
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
                 try {
-                    System.out.println("creating piece: " + counter);
-
-//                        originalImgage.getSubimage(x, y, width, height)
                     BufferedImage SubImage = gameImage.getSubimage(x, y, eWidth, eHeight);
 
                     File outputfile = new File("/Users/noahkiefer/IdeaProjects/GameOf15_DELUXE/src/main/resources/images/ImageCuts/"+counter+".png");

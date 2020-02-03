@@ -41,9 +41,6 @@ public class GoogleLeaderboard {
 
     public GoogleLeaderboard(Stage stage) throws IOException, GeneralSecurityException {
         stage.setTitle("GoogleLeaderboard");
-
-        newPlayer("looks", 40);
-
         stage.setScene(createBoard());
         stage.show();
     }
@@ -110,12 +107,10 @@ public class GoogleLeaderboard {
     }
 
     private static ObservableList<Player> loadBoard() throws IOException, GeneralSecurityException {
-        sheetsService = getSheetsService();
-
         ObservableList<Player> playerList = FXCollections.observableArrayList();
 
         int counter = 1;
-
+        sheetsService = getSheetsService();
         // Reads data already written in google sheets
         String range = "Sheet1!B2:C12";
         ValueRange response = sheetsService.spreadsheets().values()
@@ -123,12 +118,11 @@ public class GoogleLeaderboard {
                 .execute();
 
         List<List<Object>> values = response.getValues();
-        System.out.println(values.size());
 
         if(values == null || values.isEmpty()) {
             System.out.println("No data found");
         } else {
-            System.out.println("Place, Name, Time:");
+            System.out.println("Name, Place, Time:");
 
             for (List row: values) {
                 System.out.printf("%s came in %s with a time of %s\n", row.get(0), counter, row.get(1));

@@ -177,9 +177,9 @@ public class Game  {
                 numbers[m][n] = tmp;
             }
         }
-        if(!isSolvable()) {
-            shuffleStart();
-        }
+            if(!isSolvable()) {
+                shuffleStart();
+            }
     }
 
     private boolean isSolvable() {
@@ -208,18 +208,8 @@ public class Game  {
         if (gridW % 2 == 0) {
             System.out.println((Inversions % 2 == 0) == (blankPos % 2 != 0));
             return (Inversions % 2 == 0) == (blankPos % 2 != 0);
-//            if ((Inversions % 2 == 0) == (blankPos % 2 != 0)) {
-//                return;
-//            } else {
-//                shuffleStart();
-//            }
         } else {
             return Inversions % 2 == 0;
-//            if (Inversions % 2 == 0) {
-//                return ;
-//            } else {
-//                shuffleStart();
-//            }
         }
     }
 
