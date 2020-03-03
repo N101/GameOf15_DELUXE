@@ -254,8 +254,6 @@ public class GoogleLeaderboard {
 
                 // delete 11th time to keep the leaderboard to the top 10
                 delete(11);
-
-                System.out.println("finished subbing in new time");
             }
 
         } else {   // There still is some space on the leaderboard (less than 10 players have played)
@@ -284,14 +282,11 @@ public class GoogleLeaderboard {
                 edit(new ValueRange().setValues(
                         Arrays.asList(Arrays.asList(newPos, name, time))
                 ), newPlayerRange);
-
-                System.out.println("finished switching in new player before top 10 full");
             } else {
 
                 // If the new time is slower, add the new time to the bottom of the leaderboard
                 String stringIndex = String.valueOf(values.size() + 2);   // to account for frozen row
                 String editRange = "B" + stringIndex + ":C" + stringIndex;
-                System.out.println(editRange);
                 edit(new ValueRange().setValues(
                         Arrays.asList(Arrays.asList(name, time))
                         ),

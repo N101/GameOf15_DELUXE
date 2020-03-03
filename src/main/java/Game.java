@@ -114,7 +114,7 @@ public class Game  {
                         move(finalJ, finalI);
                         repaintNumbers();
                         try {
-                            System.out.println(isGameDone());
+                            isGameDone();
                         } catch (IOException | GeneralSecurityException e1) {
                             e1.printStackTrace();
                         }
@@ -161,7 +161,6 @@ public class Game  {
                 word.append(numbers[i][j]).append(", ");
             }
         }
-        System.out.println(word);
     }
 
     private void shuffleStart() {
@@ -206,7 +205,6 @@ public class Game  {
         }
 
         if (gridW % 2 == 0) {
-            System.out.println((Inversions % 2 == 0) == (blankPos % 2 != 0));
             return (Inversions % 2 == 0) == (blankPos % 2 != 0);
         } else {
             return Inversions % 2 == 0;

@@ -117,10 +117,10 @@ public class GameImage  {
                 tiles[counter].setOnAction(e -> {
                     if (gameOver) {
                         new Alert(Alert.AlertType.ERROR, "Game is done already! Start a new game").showAndWait();
-                    } else if (isMoveLegal(finalJ, finalI) == true) {
+                    } else if (isMoveLegal(finalJ, finalI)) {
                         move(finalJ, finalI);
                         repaintNumbers();
-                        System.out.println(isGameDone());
+                        isGameDone();
                         printGrid();
                     }
                 });
@@ -166,7 +166,6 @@ public class GameImage  {
                 word.append(numbers[i][j]).append(", ");
             }
         }
-        System.out.println(word);
     }
 
     private void shuffleStart() {
@@ -210,7 +209,6 @@ public class GameImage  {
             }
         }
 
-        System.out.println((Inversions % 2 == 0) == (blankPos % 2 != 0));
         return (Inversions % 2 == 0) == (blankPos % 2 != 0);
     }
 
